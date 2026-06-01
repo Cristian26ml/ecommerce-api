@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card login-card shadow-lg">
+      <div class="card-header login-card__header">
+        <h4 class="mb-0">Iniciar sesión</h4>
+      </div>
+
+      <div class="card-body px-4 pt-4 pb-3">
+        <form action="/api/users/login" method="POST">
+          <div class="mb-3">
+            <label for="username" class="form-label login-label">Usuario</label>
+            <input type="text" name="username" id="username"
+              class="form-control login-input" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label login-label">Contraseña</label>
+            <input type="password" name="password" id="password"
+              class="form-control login-input" required>
+          </div>
+
+          <button type="submit" class="btn login-btn w-100">Entrar</button>
+        </form>
+      </div>
+
+      <div class="card-footer login-card__footer text-center">
+        <small>¿No tienes cuenta? <a href="/register" class="login-link">Regístrate aquí</a></small>
+      </div>
+    </div>
+  </div>
+</div>

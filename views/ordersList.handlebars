@@ -1,0 +1,51 @@
+<h1 class="mb-4">Listado de Órdenes</h1>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each orders}}
+            <tr>
+                <td>{{this._id}}</td>
+                <td>{{formatDate this.createdAt}}</td>
+                <td>
+                    <span class="badge 
+                        {{#if (eq this.status 'pendiente')}} bg-warning 
+                        {{else if (eq this.status 'pagado')}} bg-success 
+                        {{else}} bg-primary {{/if}}">
+                        {{this.status}}
+                    </span>
+                </td>
+                <td>${{this.total}}</td>
+                <td>
+                    <a href="/orders/{{this._id}}" class="btn btn-info btn-sm">Ver detalle</a>
+
+                    {{#if (eq ../user.role "operario")}}
+                        {{#if (eq this.status "pendiente")}}
+                            <form action="/orders/{{this._id}}/mark-paid" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Pagado</button>
+                            </form>
+                        {{/if}}
+                    {{/if}}
+
+                    {{#if (eq ../user.role "admin")}}
+                        {{#if (eq this.status "pagado")}}
+                            <form action="/orders/{{this._id}}/ship" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-primary btn-sm">Enviado</button>
+                            </form>
+                        {{/if}}
+                    {{/if}}
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<a href="/dashboard/operario" class="btn btn-secondary">Volver a Panel de Operario</a>

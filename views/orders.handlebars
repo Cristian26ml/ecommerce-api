@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <h1>Confirmación de Orden</h1>
+    <p>Tu orden ha sido generada con éxito</p>
+
+    {{#if msg}}
+        <div class="alert alert-success mt-3">
+            {{msg}}
+        </div>
+    {{/if}}
+
+    {{#if error}}
+        <div class="alert alert-danger mt-3">
+            {{error}}
+        </div>
+    {{/if}}
+
+    <h3>Detalles de la orden:</h3>
+    <p><strong>Total:</strong> ${{order.total}}</p>
+    <p><strong>Estado actual:</strong> {{order.status}}</p>
+    <p><strong>Fecha:</strong> {{formatDate order.createdAt}}</p>
+
+    {{#if (eq user.role "cliente")}}
+        {{#unless (eq order.status "Pagado")}}
+            <form action="/api/orders/{{order._id}}/pay" method="POST" onsubmit="return showSuccessAlert();">
+                <button type="submit" class="btn btn-primary">Pagar</button>
+            </form>
+        {{/unless}}
+    {{/if}}
+
+    {{#if (or (eq user.role "operario") (eq user.role "admin"))}}
+        <form action="/api/orders/{{order._id}}/pay" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-warning">Marcar como Pagado</button>
+        </form>
+
+        <form action="/api/orders/{{order._id}}/ship" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-info">Marcar como Enviado</button>
+        </form>
+    {{/if}}
+
+    <br><br>
+    <a href="/products" class="btn btn-success">Volver a productos</a>
+</div>
+
+<script>
+    function showSuccessAlert() {
+        alert("Compra realizada con éxito. Gracias por su compra");
+        return true;
+    }
+</script>

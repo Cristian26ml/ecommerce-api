@@ -1,0 +1,21 @@
+<h1>Prueba de envío de change</h1>
+
+<!-- Botón para sumar -->
+<form action="/api/carts/{{cartId}}/products/6a0e63a1ed76b71f196c34b0" method="POST">
+  <input type="hidden" name="change" value="1">
+  <input type="hidden" name="_method" value="PUT">
+  <button type="submit">Sumar (+1)</button>
+</form>
+
+<!-- Botón para restar -->
+<form action="/api/carts/{{cartId}}/products/6a0e63a1ed76b71f196c34b0" method="POST">
+  <input type="hidden" name="change" value="-1">
+  <input type="hidden" name="_method" value="PUT">
+  <button type="submit">Restar (-1)</button>
+</form>
+
+<!-- Botón para eliminar -->
+<form action="/api/carts/{{cartId}}/products/6a0e63a1ed76b71f196c34b0" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit">Eliminar producto</button>
+</form>

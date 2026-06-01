@@ -1,0 +1,74 @@
+<h1>Carrito</h1>
+
+{{#if error}}
+    <div id="alert-error" class="alert alert-error">
+        {{error}}
+    </div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById("alert-error");
+            if (alert) alert.style.display = "none";
+        }, 4000);
+    </script>
+{{/if}}
+
+{{#if msg}}
+    <div id="alert-msg" class="alert alert-success">
+        {{msg}}
+    </div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById("alert-msg");
+            if (alert) alert.style.display = "none";
+        }, 3000);
+    </script>
+{{/if}}
+
+{{#if cart.products.length}}
+    <ul id="cart-list">
+        {{#each cart.products}}
+            <li class="cart-item">
+                <strong>{{this.product.title}}</strong>
+                - Precio: ${{this.product.price}}
+                - Cantidad: {{this.quantity}}
+                - Subtotal: ${{multiply this.product.price this.quantity}}
+
+                <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST" class="form-inline">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="change" value="1">
+                    <button type="submit" class="btn-quantity">+</button>
+                </form>
+
+                <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST" class="form-inline">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="change" value="-1">
+                    <button type="submit" class="btn-quantity">-</button>
+                </form>
+
+                <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST" class="form-inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn-remove">Eliminar</button>
+                </form>
+            </li>
+        {{/each}}
+    </ul>
+
+    <h3 id="cart-total" class="cart-total">Total: ${{calculateTotal cart.products}}</h3>
+
+    <form action="/api/orders/{{cart._id}}" method="POST">
+        <button type="submit" class="btn-checkout">Finalizar compra</button>
+    </form>
+
+    <form action="/api/carts/{{cart._id}}" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="btn-checkout">Vaciar carrito</button>
+    </form>
+{{else}}
+    <p class="cart-empty">El carrito está vacío.</p>
+{{/if}}
+{{#if user.cartId}}
+    <a href="/dashboard/cliente" class="btn btn-secondary">Volver a Página principal</a>
+{{/if}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>
